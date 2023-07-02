@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+final homeUrl = Uri.parse("https://blog.codefactory.ai");
+
 class HomeScreen extends StatelessWidget {
-  WebViewController? controller;
-  final homeUrl = "https://blog.codefactory.ai";
+  // 선언과 동시에 초기화
+  WebViewController controller = WebViewController()
+  ..setJavaScriptMode(JavaScriptMode.unrestricted)
+  ..loadRequest(homeUrl);
+  
+
 
   HomeScreen({super.key});
 
@@ -17,23 +23,24 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: (){
-                if(controller == null) {
-                  return;
-                }
-                controller!.loadUrl(homeUrl);
+
+                controller.loadRequest(homeUrl);
               },
               icon: Icon(
                 Icons.home
           ))
         ],
       ),
-      body: WebView(
-        onWebViewCreated: (WebViewController controller){
-          this.controller = controller;
-        },
-        initialUrl: homeUrl,
-        javascriptMode: JavascriptMode.unrestricted,
+      body: WebViewWidget(
+        controller: controller,
       )
+      // WebView(
+      //   onWebViewCreated: (WebViewController controller){
+      //     this.controller = controller;
+      //   },
+      //   initialUrl: homeUrl,
+      //   javascriptMode: JavascriptMode.unrestricted,
+      // )
     );
   }
 }
